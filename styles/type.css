@@ -1,0 +1,134 @@
+/* ==========================================================================
+   TYPE SYSTEM: the single source of truth for fonts and sizes.
+   Two fonts: typewriter (Courier Prime) and serif (Source Serif 4).
+   Handwriting (Caveat) is used only for “Portfolio” and “Cheers!”.
+
+   Scale (7 sizes):
+     xs   12px   typed labels: tags, captions, tabs, small links
+     s    14px   typed text: buttons, section headings, meta, notes
+     m    16px   serif supporting text: summaries, captions, sleeve text
+     body 18px   serif reading text (17px on phones)
+     l    22px   serif sub-headings: card titles, quotes
+     xl   30px   serif page openers + typed result numbers
+     xxl  44px   case headline + CASES title
+   ========================================================================== */
+:root {
+  --t-xs: 12px;
+  --t-s: 14px;
+  --t-m: 16px;
+  --t-body: 18px;
+  --t-l: 22px;
+  --t-xl: clamp(26px, 3.4vw, 30px);
+  --t-xxl: clamp(34px, 5vw, 44px);
+}
+@media (max-width: 560px) { :root { --t-body: 17px; } }
+
+body { font-family: var(--f-body); font-size: var(--t-body); line-height: 1.6; }
+
+/* ---- xs · typed labels (uppercase) ---- */
+.label-k, .chip, .sleeve__label, .tcard__mno, .tcard__note, .tcard__go, .case__kicker, .case__crumbs,
+.pager, .foot, .tab, .tabs__home, .label__sub, .fig__was-k, .doc-sh, .dd__head span, .idcard dt,
+.zoom__hint, .lightbox__close, .btn--ghost, .stamp--sm, .doc-read summary, .doc-article h6, .doc-article cite,
+.doc-fig figcaption, .doc-scroll figcaption, .doc-phone figcaption, .steps li::before, .dd__row p::before {
+  font-family: var(--f-type); font-size: var(--t-xs); line-height: 1.3; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.tcard__go, .case__kicker, .sleeve__label, .tab, .doc-read summary, .lightbox__close, .label-k, .dd__head span { font-weight: 700; }
+.chip, .tcard__mno, .tcard__note, .foot, .label__sub, .fig__was-k, .doc-fig figcaption, .doc-scroll figcaption, .doc-phone figcaption { font-weight: 400; }
+.tcard__mno { text-transform: none; letter-spacing: 0.04em; }
+
+/* ---- s · typed text ---- */
+.btn, .filed li, .case__meta, .notes li, .fig__was, .fig__unit, .doc-defs dt, .idcard dd, .stamp, .doc-example {
+  font-family: var(--f-type); font-size: var(--t-s); line-height: 1.45;
+}
+.btn { font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1; }
+.fig__unit, .doc-defs dt { font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ---- s · section headings, all the same: typed, bold, uppercase ---- */
+.minihead, .case__h, .doc-h, .doc-article h5 {
+  font-family: var(--f-type); font-size: var(--t-s); font-weight: 700; line-height: 1.3;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.case__h { margin-bottom: 16px; padding-top: 12px; border-top: 2px solid var(--ink); }
+.ending { border-top: 0; padding-top: 0; }
+
+/* ---- m · typed values ---- */
+.contact__list .val, .divider__sub { font-family: var(--f-type); font-size: var(--t-m); line-height: 1.45; }
+
+/* ---- m · serif supporting text ---- */
+.tcard__sum, .fig__label, .steps span, .sleeve__doc, .dd p, .doc-article, .pager small, .doc-list, .doc-defs dd {
+  font-family: var(--f-body); font-size: var(--t-m); line-height: 1.55;
+}
+.dd small { font-family: var(--f-body); font-size: var(--t-s); }
+
+/* ---- body · serif reading text ---- */
+.prose, .layers, .ending__list { font-family: var(--f-body); font-size: var(--t-body); line-height: 1.6; }
+.steps b, .layers b { font-family: var(--f-body); font-size: var(--t-body); font-weight: 600; line-height: 1.3; }
+
+/* ---- typed emphasis at body size ---- */
+.prose p.slip, .label__name { font-family: var(--f-type); font-size: var(--t-body); font-weight: 700; line-height: 1.45; }
+.label__name { line-height: 1.1; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ---- l · serif sub-headings ---- */
+.tcard__title, .doc-article h4 { font-family: var(--f-body); font-size: var(--t-l); font-weight: 600; line-height: 1.25; }
+.doc-quote, .doc-article blockquote { font-family: var(--f-body); font-size: var(--t-l); font-style: italic; font-weight: 400; line-height: 1.4; }
+
+/* ---- xl · page openers and result numbers ---- */
+.about__hello, .contact__lead { font-family: var(--f-body); font-size: var(--t-xl); font-weight: 600; line-height: 1.2; }
+.fig { font-family: var(--f-type); font-size: var(--t-xl); font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; }
+
+/* ---- xxl · case headline and CASES ---- */
+.case__title { font-family: var(--f-body); font-size: var(--t-xxl); font-weight: 600; line-height: 1.1; }
+.divider__title { font-family: var(--f-type); font-size: var(--t-xxl); font-weight: 700; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ---- handwriting: two decorative words only ---- */
+.label__word { font-family: var(--f-hand); font-size: clamp(56px, 8vw, 72px); font-weight: 500; line-height: 0.9; }
+.sign { font-family: var(--f-hand); font-size: clamp(44px, 6vw, 56px); font-weight: 500; line-height: 0.9; }
+
+/* ==========================================================================
+   Revision: hierarchy and numbers (after Yulia’s review)
+   Numbers: bold grotesk (Archivo 800), used ONLY for result figures — most readable.
+   Case hierarchy:
+     H1  case headline        serif 600, xxl (44px)
+     H2  Brief / What I did …  typewriter 700 caps, xl (30px), rule above
+     H3  Process / My input …  serif 600, l (22px)
+   Divider page: CASES is the one display size (up to 104px).
+   ========================================================================== */
+:root { --f-num: "Archivo", "Helvetica Neue", Arial, sans-serif; --t-display: clamp(56px, 10vw, 104px); }
+
+.fig { font-family: var(--f-num); font-size: clamp(30px, 4vw, 40px); font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+.fig__unit { font-family: var(--f-type); }
+
+.case__h {
+  font-family: var(--f-type); font-size: var(--t-xl); font-weight: 700; line-height: 1.15;
+  letter-spacing: 0.03em; text-transform: uppercase;
+  border-top: 2px solid var(--ink); padding-top: 14px; margin-bottom: 20px;
+}
+.layers b { font-family: var(--f-body); font-size: var(--t-l); font-weight: 600; line-height: 1.25; margin-bottom: 8px; }
+
+.divider { min-height: clamp(360px, 52vw, 520px); }
+.divider__title { font-size: var(--t-display); letter-spacing: 0.04em; }
+.layers > li:first-child { border-top: 0; padding-top: 0; }
+
+/* work sample labels (folder tabs) are H3: same size and font as H3 */
+.sleeve__label {
+  font-family: var(--f-body); font-size: var(--t-l); font-weight: 600; line-height: 1.2;
+  letter-spacing: 0; text-transform: none; padding: 10px 16px 8px;
+}
+
+/* work sample labels (folder tabs) are H3: same size and font as H3 */
+.sleeve__label {
+  font-family: var(--f-body); font-size: var(--t-l); font-weight: 600; line-height: 1.2;
+  letter-spacing: 0; text-transform: none; padding: 10px 16px 8px;
+}
+
+/* sample labels: capitals, regular weight (not bold), typewriter */
+.sleeve__label {
+  font-family: var(--f-type); font-size: var(--t-body); font-weight: 400; line-height: 1.2;
+  letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 16px 8px;
+}
+
+/* sample labels are H4: smaller than H3 (22px) — typewriter capitals, regular weight, 16px */
+.sleeve__label { font-size: var(--t-m); letter-spacing: 0.1em; padding: 9px 14px 7px; }
+
+/* sample labels: smaller tab, as small typed tags (12px capitals, regular weight) */
+.sleeve__label { font-size: var(--t-xs); letter-spacing: 0.1em; padding: 7px 12px 6px; }

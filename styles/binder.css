@@ -1,0 +1,326 @@
+/* ==========================================================================
+   Binder parts: ring strip, index tabs, cover label, home sheets
+   ========================================================================== */
+
+/* ---------- ring strip between sheets ---------- */
+/* geometry (px): upper lip 0–28 (holes at 14) · page stack 28–40 · spine gap 40–60 · lower lip 60–88 (holes at 74) */
+.rings { position: relative; height: 88px; margin-block: -2px; z-index: 2; }
+.rings::before { /* the binder spine seen between the pages */
+  content: ""; position: absolute; left: 3px; right: 3px; top: 30px; height: 32px;
+  background: linear-gradient(to bottom, #505154, #38393B 45%, #232426);
+}
+.rings__lip { position: absolute; left: 0; right: 0; height: 28px; background: linear-gradient(to bottom, var(--paper-edge), var(--paper)); }
+.rings__lip--upper {
+  top: 0; border-radius: 0 0 2px 2px; z-index: 2;
+  border-bottom: 1px solid #CFD0D2; box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset;
+}
+.rings__stack { /* edges of the pages underneath */
+  position: absolute; left: 6px; right: 6px; top: 28px; height: 12px; z-index: 1;
+  background: repeating-linear-gradient(to bottom, #DFE0E2 0 2px, #BEBFC1 2px 3px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.55);
+}
+.rings__lip--lower {
+  bottom: 0; border-radius: 2px 2px 0 0;
+  border-bottom: 1px solid #CFD0D2; box-shadow: 0 -1px 0 rgba(255,255,255,0.6) inset;
+}
+.hole {
+  position: absolute; left: var(--x); top: 50%; width: 10px; height: 10px; border-radius: 50%;
+  transform: translate(-50%, -50%); background: #A7A8AB;
+  box-shadow: inset 0 1.5px 2px rgba(0,0,0,0.35);
+}
+.hole--ring { background: #28292B; width: 11px; height: 11px; }
+.ring { position: absolute; left: var(--x); top: 0; width: 28px; height: 88px; margin-left: -14px; z-index: 3; pointer-events: none; }
+.ring__svg { display: block; width: 28px; height: 88px; overflow: visible; }
+
+/* ---------- index tabs ---------- */
+.tabs {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  max-width: var(--sheet-max); margin: 0 auto;
+  display: flex; align-items: flex-end; gap: 6px;
+  padding-top: 10px; background: var(--desk);
+}
+.tabs__home {
+  margin-right: auto; align-self: center; padding-bottom: 6px;
+  font: 700 13px var(--f-type); letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-desk); text-decoration: none;
+}
+.tab {
+  font: 700 13px/1 var(--f-type); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none;
+  padding: 12px 14px 10px; border-radius: 6px 6px 0 0; transform: translateY(4px);
+  transition: transform 0.15s ease;
+}
+.tab:hover, .tab[aria-current="true"] { transform: translateY(0); }
+.tab--about { background: var(--manila); color: var(--ink); }
+.tab--cases { background: var(--red-deep); color: var(--paper); }
+.tab--contact { background: var(--ink); color: var(--paper); box-shadow: inset 0 0 0 1px #38393B; }
+.tab[aria-current="true"] { padding-bottom: 14px; }
+@media (max-width: 1039px) { :root { --tabs-h: 52px; } }
+@media (max-width: 440px) { .tabs__home { display: none; } .tabs { justify-content: flex-end; } }
+
+@media (min-width: 1040px) {
+  .tabs {
+    position: fixed; top: 132px; left: calc(50% + var(--sheet-max) / 2 - 2px); margin: 0;
+    flex-direction: column; align-items: flex-start; gap: 8px; padding: 0; background: none;
+  }
+  .tabs__home { display: none; }
+  .tab {
+    writing-mode: vertical-rl; padding: 18px 11px; border-radius: 0 6px 6px 0; transform: translateX(-6px);
+  }
+  .tab:hover, .tab[aria-current="true"] { transform: translateX(0); }
+  .tab[aria-current="true"] { padding: 22px 15px 22px 11px; }
+}
+@media (prefers-reduced-motion: reduce) { .tab { transition: none; } }
+
+/* ---------- cover: a dossier — label, roles, and buttons on the left; photo clipped on as a print ---------- */
+.cover { padding-block: clamp(36px, 6vw, 64px); }
+.cover__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(28px, 5vw, 56px); align-items: center; }
+.cover__text { display: grid; gap: clamp(22px, 3vw, 30px); justify-items: start; min-width: 0; }
+
+.label {
+  position: relative; width: min(330px, 100%); transform: rotate(-2deg);
+  background: var(--red-deep); color: var(--paper); text-align: center;
+  padding: 40px 22px 24px; box-shadow: 0 12px 24px rgba(0,0,0,0.18), 0 1px 0 rgba(0,0,0,0.12);
+  margin-top: 18px;
+}
+.label__clip { position: absolute; left: 50%; top: -30px; width: 54px; transform: translateX(-50%); }
+.label__name { font: 700 clamp(17px, 2.4vw, 21px)/1.1 var(--f-type); text-transform: uppercase; letter-spacing: 0.08em; }
+.label__word { font: 400 clamp(56px, 8vw, 72px)/0.9 var(--f-hand); transform: rotate(-2deg); margin-block: 12px 8px; }
+.label__sub { font: 400 13px/1.2 var(--f-type); text-transform: uppercase; letter-spacing: 0.16em; color: var(--paper); opacity: 0.9; }
+.btn--red { background: var(--red-deep); color: var(--paper); }
+.btn--red:hover { background: var(--ink); }
+
+.filed { display: grid; gap: 8px; }
+.filed ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.filed li { font: 400 16px/1.4 var(--f-type); color: var(--ink); padding-left: 18px; position: relative; }
+.filed li::before { content: "•"; position: absolute; left: 0; color: var(--red-ink); }
+.cover__ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn--line { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn--line:hover { background: var(--ink); color: var(--paper); }
+
+/* the photo, printed as a halftone and held on by a paper clip */
+.cover__print {
+  position: relative; margin: 0; justify-self: center; width: min(340px, 100%);
+  background: var(--doc); padding: 12px 12px 34px; transform: rotate(2.2deg);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 14px 28px rgba(0,0,0,0.18);
+}
+.cover__print .tcard__clip { top: -22px; right: 26px; width: 22px; height: 58px; }
+.cover__photo { position: relative; aspect-ratio: 4 / 5; max-width: 100%; overflow: hidden; background: #DEDFE0; }
+.cover__img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
+  filter: grayscale(1) contrast(1.35) brightness(1.05);
+}
+.cover__halftone { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cover__photo.is-halftone .cover__img { opacity: 0.55; filter: grayscale(1) contrast(1.1) brightness(1.18); }
+
+@media (max-width: 700px) { /* phones: photo first, smaller, then the label and roles */
+  .cover__grid { grid-template-columns: 1fr; gap: 28px; }
+  .cover__print { order: -1; width: min(230px, 70%); padding: 9px 9px 24px; }
+  .cover__text { justify-items: center; text-align: center; }
+  .label { width: min(290px, 86%); padding: 34px 16px 18px; }
+  .filed li { padding-left: 0; }
+  .filed li::before { content: none; }
+  .cover__ctas { justify-content: center; }
+}
+
+/* ---------- about ---------- */
+.about__grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: clamp(24px, 4vw, 48px); align-items: start; }
+@media (max-width: 760px) {
+  .about__grid { grid-template-columns: 1fr; }
+  /* phones: the details card moves to the end, after languages */
+  .about { display: flex; flex-direction: column; }
+  .about__grid { display: contents; }
+  .about .idcard { order: 10; margin-top: 28px; transform: none; }
+}
+.about__hello { font: 600 clamp(30px, 4.2vw, 40px)/1.1 var(--f-body); margin-bottom: 16px; }
+/* the focus line: a typed paper card, held on the sheet by a red sticker */
+.prose p.slip {
+  position: relative; margin-top: 22px; max-width: 34ch;
+  background: var(--doc); color: var(--ink);
+  font: 700 clamp(17px, 2vw, 20px)/1.45 var(--f-type); letter-spacing: 0.01em;
+  padding: 18px 22px 16px; transform: rotate(-1.2deg);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 6px 14px rgba(0,0,0,0.1);
+}
+.slip__tape { /* red sticker tape across the top edge */
+  position: absolute; top: -12px; left: 50%; width: 92px; height: 24px; transform: translateX(-50%) rotate(-3deg);
+  background: rgba(101, 0, 11, 0.9);
+  border-left: 2px dotted rgba(255,255,255,0.35); border-right: 2px dotted rgba(255,255,255,0.35);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.idcard {
+  background: var(--doc); border: 1px solid var(--rule); padding: 18px 18px 16px;
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.06); transform: rotate(0.6deg);
+  border-top: 3px solid var(--red);
+}
+.idcard dl { margin: 0; display: grid; gap: 12px; }
+.idcard dt { font: 700 12px/1.2 var(--f-type); text-transform: uppercase; letter-spacing: 0.12em; color: var(--caption); }
+.idcard dd { margin: 2px 0 0; font: 400 15px/1.4 var(--f-type); overflow-wrap: anywhere; }
+.copyrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.about .figures { margin-top: clamp(32px, 5vw, 48px); }
+.minihead { font: 800 14px/1 var(--f-display); text-transform: uppercase; letter-spacing: 0.08em; margin: clamp(32px, 5vw, 44px) 0 16px; }
+.toc-results .minihead { margin-top: 0; }
+.toc-results + .minihead { margin-bottom: 0; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: step; }
+.steps li { counter-increment: step; border-top: 1px solid var(--ink); padding-top: 12px; min-width: 0; }
+.steps li::before { content: counter(step, decimal-leading-zero); font: 700 13px var(--f-type); color: var(--red-ink); display: block; margin-bottom: 6px; }
+.steps b { display: block; font: 600 17px/1.25 var(--f-body); margin-bottom: 4px; }
+.steps span { font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+@media (max-width: 760px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .steps { grid-template-columns: 1fr; } }
+.skills { margin-top: clamp(28px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.skills + .skills { margin-top: 14px; }
+.skills .label-k { margin-right: 6px; }
+
+/* ---------- cases divider (red page) ---------- */
+.divider { background: var(--red-deep); color: var(--paper); min-height: clamp(240px, 36vw, 340px); display: grid; align-content: end; gap: 24px; }
+.divider__title { font: 800 clamp(72px, 16vw, 168px)/0.85 var(--f-display); text-transform: uppercase; letter-spacing: -0.03em; }
+.divider__sub { font: 400 16px/1.4 var(--f-type); letter-spacing: 0.04em; max-width: 40ch; margin-top: 12px; }
+
+/* ---------- contents: preview cards ---------- */
+.toc { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 3.4vw, 36px) clamp(16px, 2.6vw, 28px); }
+@media (max-width: 640px) { .toc { grid-template-columns: 1fr; } }
+.toc li { min-width: 0; scroll-margin-top: calc(var(--tabs-h) + 24px); }
+.tcard { display: grid; gap: 12px; text-decoration: none; color: inherit; height: 100%; align-content: start; -webkit-tap-highlight-color: transparent; }
+
+/* the mount (four looks, rotating card by card) */
+.tcard__print {
+  position: relative; display: block; aspect-ratio: 4 / 3; max-width: 100%;
+  padding: clamp(14px, 2.2vw, 22px) clamp(10px, 1.6vw, 16px) clamp(10px, 1.6vw, 16px);
+}
+.tcard__mno { /* typed number on the mount, like the binder photo */
+  position: absolute; top: 6px; left: 10px; z-index: 2;
+  font: 400 13px/1 var(--f-type); letter-spacing: 0.04em; color: var(--ink-2); font-variant-numeric: tabular-nums;
+}
+.tcard__pic { display: block; width: 100%; height: 100%; overflow: hidden; }
+.tcard__pic img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+  /* printed look: darker exposure, more contrast, so it reads as ink instead of washed-out grey */
+  filter: grayscale(1) contrast(1.25) brightness(0.88); mix-blend-mode: multiply;
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+.tcard:hover .tcard__pic img, .tcard:focus-visible .tcard__pic img, .tcard:active .tcard__pic img {
+  filter: saturate(1.15) contrast(1.05) brightness(1); mix-blend-mode: normal; transform: scale(1.02);
+}
+
+/* 1 · clear pocket with stitched seams */
+.tcard__print--pocket {
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(18, 18, 19, 0.12);
+  box-shadow: inset 0 0 0 5px rgba(255,255,255,0.35), 0 6px 14px rgba(0,0,0,0.08);
+}
+.tcard__print--pocket::before { /* stitched seam */
+  content: ""; position: absolute; inset: 5px; border: 1.5px dotted rgba(18, 18, 19, 0.22); pointer-events: none; z-index: 1;
+}
+.tcard__print--pocket .tcard__pic { background: var(--doc); padding: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+.tcard__print--pocket::after { /* glare on the plastic */
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(118deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 24%, rgba(255,255,255,0) 68%, rgba(255,255,255,0.28) 78%, rgba(255,255,255,0) 88%);
+}
+
+/* 2 · print held by a paper clip */
+.tcard__print--clip { background: var(--doc); border: 1px solid var(--rule); transform: rotate(-1.2deg); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
+.tcard__clip { position: absolute; top: -18px; right: 18px; width: 18px; height: 48px; z-index: 3; transform: rotate(8deg); }
+
+/* 3 · crumpled paper */
+.tcard__print--crumpled {
+  background-color: #E4E5E6;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='240'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.011 0.016' numOctaves='5' seed='7'/><feDiffuseLighting lighting-color='%23F2F2F1' surfaceScale='2.4'><feDistantLight azimuth='225' elevation='52'/></feDiffuseLighting></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>");
+  background-size: cover;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+/* 4 · perforated printer paper */
+.tcard__print--tractor {
+  --hole: radial-gradient(circle at 50% 50%, var(--paper) 0 3.6px, rgba(0,0,0,0.18) 3.7px 4.4px, transparent 4.6px);
+  background:
+    var(--hole) left 4px top 6px / 14px 20px repeat-y,
+    var(--hole) right 4px top 6px / 14px 20px repeat-y,
+    #D7D8DA;
+  padding-inline: 28px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+.tcard__print--tractor::before, .tcard__print--tractor::after { /* tear-off perforation lines */
+  content: ""; position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(18,18,19,0.2);
+}
+.tcard__print--tractor::before { left: 22px; }
+.tcard__print--tractor::after { right: 22px; }
+.tcard__print--tractor .tcard__mno { left: 30px; }
+
+.tcard__body { display: grid; gap: 6px; min-width: 0; }
+.tcard__top { display: flex; justify-content: flex-start; align-items: baseline; gap: 12px; }
+.tcard__go { font: 700 12px var(--f-type); text-transform: uppercase; letter-spacing: 0.1em; color: var(--red-ink); white-space: nowrap; }
+.tcard__note { font: 400 11px var(--f-type); text-transform: uppercase; letter-spacing: 0.1em; color: var(--caption); white-space: nowrap; }
+.tcard__title { font: 600 clamp(18px, 2.2vw, 21px)/1.25 var(--f-body); }
+a.tcard:hover .tcard__title { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 0.2em; }
+.tcard__sum { font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.tcard .chips { margin-top: 4px; }
+@media (max-width: 640px) { /* compact: small print on the left, text on the right */
+  .toc { gap: 22px; }
+  .tcard { grid-template-columns: 112px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .tcard__print { aspect-ratio: 1 / 1; padding: 16px 8px 8px; }
+  .tcard__print--tractor { padding-inline: 22px; }
+  .tcard__print--tractor::before { left: 17px; } .tcard__print--tractor::after { right: 17px; }
+  .tcard__print--tractor .tcard__mno { left: 24px; }
+  .tcard__print--pocket .tcard__pic { padding: 4px; }
+  .tcard__mno { font-size: 11px; top: 4px; left: 8px; }
+  .tcard__clip { top: -14px; right: 10px; width: 14px; height: 38px; }
+  .tcard__title { font-size: 17px; }
+  .tcard__sum { font-size: 14px; }
+  .tcard .chips { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .tcard__pic img { transition: none; } }
+
+/* ---------- contact ---------- */
+/* the receiver hangs from under the ring strip, redrawn as red halftone dots */
+.contact { --phone-w: clamp(76px, 13vw, 128px); padding-right: calc(var(--pad) + var(--phone-w) + clamp(12px, 3vw, 32px)); }
+.phone {
+  position: absolute; top: -34px; right: var(--pad); width: var(--phone-w); aspect-ratio: 320 / 1000; max-width: 100%;
+  z-index: 1; pointer-events: none; transform-origin: 50% 0; transform: rotate(-3deg);
+}
+.phone .ht__img, .phone .ht__dots { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.phone .ht__img { mix-blend-mode: multiply; }
+@media (max-width: 640px) {
+  .contact { --phone-w: 62px; padding-right: var(--pad); }
+  .contact .sheet__head, .contact .contact__lead { margin-right: calc(var(--phone-w) + 10px); }
+}
+.phone.is-halftone .ht__img { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .phone { animation: sway 5s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-3deg); } to { transform: rotate(1.5deg); } }
+}
+.contact__lead { font: 600 clamp(24px, 3.4vw, 32px)/1.2 var(--f-body); max-width: 24ch; }
+.contact__list { list-style: none; margin: 28px 0 32px; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--ink); }
+.contact__list li { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.contact__list .val { font: 400 17px/1.4 var(--f-type); overflow-wrap: anywhere; }
+@media (max-width: 480px) { .contact__list li { grid-template-columns: 1fr; gap: 4px; } }
+.contact__end { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.sign { font: 400 clamp(44px, 7vw, 60px)/0.9 var(--f-hand); transform: rotate(-4deg); }
+
+/* ---------- colour: red cover sheet (Brand Edit), black Cases page ---------- */
+.cover { background: var(--red-deep); color: var(--paper); }
+.cover .label { background: #E2E3E4; color: var(--ink); box-shadow: 0 14px 28px rgba(30, 0, 4, 0.35), 0 1px 0 rgba(0,0,0,0.15); }
+.cover .label__sub { color: var(--ink-2); opacity: 1; }
+.cover .filed .label-k { color: var(--paper); opacity: 0.8; }
+.cover .filed li { color: var(--paper); }
+.cover .filed li::before { color: var(--paper); opacity: 0.7; }
+.btn--paper { background: var(--paper); color: var(--ink); }
+.btn--paper:hover { background: var(--ink); color: var(--paper); }
+.cover .btn--line { color: var(--paper); box-shadow: inset 0 0 0 1.5px var(--paper); }
+.cover .btn--line:hover { background: var(--paper); color: var(--ink); }
+.cover .btn:focus-visible { outline-color: var(--paper); }
+.cover__print { box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 16px 32px rgba(30, 0, 4, 0.4); }
+
+/* ---------- case cards: one size, aligned, more air (UX review) ---------- */
+.toc { gap: clamp(44px, 6vw, 64px) clamp(24px, 4vw, 40px); margin-top: 24px; }
+.toc li { display: flex; }
+.tcard { width: 100%; grid-template-rows: auto 1fr; gap: 18px; }
+.tcard__print { aspect-ratio: 4 / 3; width: 100%; } /* identical box for every mount */
+.tcard__print--clip { transform: none; }            /* no tilt, so all titles start on the same line */
+.tcard__body { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; height: 100%; }
+.tcard .chips { margin-top: 2px; }
+.tcard__go, .tcard__note { margin-top: auto; padding-top: 10px; }
+.tcard__go { color: var(--red-ink); border-bottom: 1.5px solid currentColor; padding-bottom: 2px; }
+a.tcard:hover .tcard__go { color: var(--ink); }
+@media (max-width: 640px) {
+  .toc { gap: 32px; }
+  .tcard { grid-template-rows: none; }
+  .tcard__go, .tcard__note { margin-top: 4px; padding-top: 0; }
+}
