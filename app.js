@@ -418,18 +418,41 @@
       if (!c || c.status !== 'live') { location.replace('#cases'); return; }
       renderCase(c); view = 'case:' + c.slug; enter();
       document.title = `${c.title} · Yulia Zyrianova`;
+      track({ path: `/case/${c.slug}`, title: c.title });
       window.scrollTo({ top: 0, behavior: 'instant' });
       const t = document.getElementById('case-h'); if (t) t.focus({ preventScroll: true });
       return;
     }
     const fromCase = view !== 'home';
-    if (fromCase) { renderHome(); view = 'home'; enter(); }
+    if (fromCase) { renderHome(); view = 'home'; enter(); track({ path: '/', title: 'Home' }); }
     document.title = BASE_TITLE;
     const target = hash === 'cases' && lastCase ? document.getElementById(`item-${lastCase}`) : (hash ? document.getElementById(hash) : null);
     lastCase = hash === 'cases' ? null : lastCase;
     if (target && fromCase) requestAnimationFrame(() => target.scrollIntoView({ block: 'start', behavior: 'instant' }));
     else if (!hash && fromCase) window.scrollTo({ top: 0, behavior: 'instant' });
   }
+
+  /* ---------- visitor stats (GoatCounter, cookie-free) ----------
+     Each case counts as its own page (/case/<slug>); CV downloads and contact clicks count as events.
+     Only the live site counts, never previews or local copies. */
+  function track(vars) {
+    if (location.hostname !== 'yuliazyrianova.github.io') return;
+    let tries = 0;
+    const send = () => {
+      if (window.goatcounter && typeof window.goatcounter.count === 'function') window.goatcounter.count(vars);
+      else if (tries++ < 40) setTimeout(send, 250);   // the counter script loads in the background
+    };
+    send();
+  }
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest('a, button');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (href.endsWith('.pdf')) track({ path: 'click-cv-download', title: 'CV download', event: true });
+    else if (href.includes('linkedin.com')) track({ path: 'click-linkedin', title: 'LinkedIn click', event: true });
+    else if (href.includes('t.me/')) track({ path: 'click-telegram', title: 'Telegram click', event: true });
+    else if (a.getAttribute('aria-label') === 'Copy email address') track({ path: 'click-copy-email', title: 'Email copied', event: true });
+  });
 
   tabs();
   document.addEventListener('touchstart', () => {}, { passive: true });   // lets :active show the colour preview on tap
